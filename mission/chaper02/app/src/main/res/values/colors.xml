@@ -5,5 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#3F51B5</color>
     <color name="text_sub">#4D4D4D</color>
+    <color name="purple">#673AB7</color>
+    <color name="light_gray">#e9ecef</color>
 
 </resources>

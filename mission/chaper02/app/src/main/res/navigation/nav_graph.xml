@@ -11,7 +11,7 @@
         android:label="홈"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_albumFragment4"
+            android:id="@+id/action_home_fragment_to_album_fragment"
             app:destination="@id/albumFragment" />
     </fragment>
 
@@ -36,7 +36,21 @@
         android:name="com.example.umc_flo_app.LockerFragment"
         android:label="보관함"
         tools:layout="@layout/fragment_locker">
-
     </fragment>
+
+    <fragment
+        android:id="@+id/SavedSongFragment"
+        android:name="com.example.umc_flo_app.SavedSongFragment"
+        android:label="저장한곡"
+        tools:layout="@layout/fragment_saved_song">
+    </fragment>
+
+    <fragment
+        android:id="@+id/PannelFragment"
+        android:name="com.example.umc_flo_app.PannelFragment"
+        android:label="판넬"
+        tools:layout="@layout/fragment_pannel"/>
+
+
 
 </navigation>
