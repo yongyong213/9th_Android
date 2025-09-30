@@ -40,13 +40,16 @@
       - 메모리 효율성: 화면에서 멀어져 보이지 않는 프래그먼트는 메모리에서 제거 but 사용자가 돌아올 수도 있으니 스크롤 위치나 입력값 같은 상태만 저장해둔다
       - 페이지 개수 제공
 - ViewPager2 Indicator 설정하기
+
   - Indicator란 무엇이고, 어떤 역할을 하나요?
     - `Indicator` 란 viewPager2 같은 스크롤 가능한 콘텐츠에서 사용자가 전체 페이지 중 어디쯤 와 있는지, 총 몇 페이지가 있는지 알려준다.
     - 또 인디케이터를 직접 터치하여 원하는 페이지로 이동 또한 가능하다
     - 점 형태의 인디케이터와 탭 형태의 인디케이터가 있다
   - ViewPager2에서 Indicator를 설정하려면 어떤 과정을 수행해야 하나?
+
     - `ViewPager2` 와 `TabLayout` 을 같이 생성한다.
     - `TabLayoutMediator` 로 두개를 연결한다.
+
       ```kotlin
       val viewPager = binding.viewPager
       val tabLayout = binding.tabLayout
@@ -57,13 +60,15 @@
           tab.text = tabTitles[position]
       }.attach() // attach()를 호출해야 연결이 완료됩니다.
       ```
+
       - 점모양
       - `res/drawable` 폴더에 `dot_selected.xml`, `dot_default.xml` 를 만든다.
       - `dot_selector.xml` 파일을 추가로 만들어서 선택/기본 시에 점 모양을 지정한다
       - TabLayout의 background로 `dot_selector.xml` 파일을 지정한다.
       - TabLayoutMediator를 사용해 연결한다
+
       ```kotlin
       TabLayoutMediator(tabLayout, viewPager) { tab, position ->
           // 텍스트를 설정하지 않으면 점 모양만 표시
-      }.attach() // attach()를 호출해야 연결이 완료됩니다.
+      }.attach() // attach()를 호출해야 연결이 완료됩니다..
       ```
