@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.umc_flo_app.databinding.FragmentSavedSongBinding
 
-class SavedSongFragment : Fragment() {
+class SaveSongFragment : Fragment() {
 
     lateinit var binding: FragmentSavedSongBinding
 

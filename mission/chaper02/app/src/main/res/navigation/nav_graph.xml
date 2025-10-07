@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/SavedSongFragment"
-        android:name="com.example.umc_flo_app.SavedSongFragment"
+        android:name="com.example.umc_flo_app.SaveSongFragment"
         android:label="저장한곡"
         tools:layout="@layout/fragment_saved_song">
     </fragment>

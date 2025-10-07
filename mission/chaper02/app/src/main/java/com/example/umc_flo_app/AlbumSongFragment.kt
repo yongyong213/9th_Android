@@ -22,12 +22,23 @@ class AlbumSongFragment : Fragment() {
             add(AlbumSong("비틀비틀 짝짜꿍", "한로로"))
             add(AlbumSong("입춘", "한로로"))
             add(AlbumSong("자처", "한로로"))
+            add(AlbumSong("금붕어", "한로로"))
+            add(AlbumSong("ㅈㅣㅂ", "한로로"))
+            add(AlbumSong("생존법", "한로로"))
         }
 
         val albumSongRVAdapter = AlbumSongRVAdapter(albumSongDatas)
         binding.rvAlbumSong.adapter = albumSongRVAdapter
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.ivBtnToggleOff.setOnClickListener {
+            binding.ivBtnToggleOff.isSelected = !binding.ivBtnToggleOff.isSelected
+        }
     }
 
 }

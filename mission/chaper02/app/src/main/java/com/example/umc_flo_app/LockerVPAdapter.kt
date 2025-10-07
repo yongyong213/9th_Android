@@ -6,7 +6,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class LockerVPAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> SavedSongFragment()
+            0 -> SaveSongFragment()
             1 -> SongFileFragment()
             else -> SaveAlbumFragment()
         }

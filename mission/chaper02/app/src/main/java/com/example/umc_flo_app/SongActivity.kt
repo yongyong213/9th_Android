@@ -35,6 +35,14 @@ class SongActivity : AppCompatActivity(){
         binding.songBtnPauseIv.setOnClickListener {
             setPlayerStatus(true)
         }
+
+        binding.songBtnRandomInactiveIv.setOnClickListener {
+            setRandomStatus()
+        }
+
+        binding.songBtnRepeatInactiveIv.setOnClickListener {
+            setRepeatStatus()
+        }
     }
 
     fun setPlayerStatus(isPlaying: Boolean){
@@ -47,4 +55,14 @@ class SongActivity : AppCompatActivity(){
             binding.songBtnPauseIv.visibility = View.VISIBLE
         }
     }
+
+    fun setRandomStatus(){
+        binding.songBtnRandomInactiveIv.isSelected = !binding.songBtnRandomInactiveIv.isSelected
+    }
+
+    fun setRepeatStatus(){
+        binding.songBtnRepeatInactiveIv.isSelected = !binding.songBtnRepeatInactiveIv.isSelected
+    }
+
+
 }

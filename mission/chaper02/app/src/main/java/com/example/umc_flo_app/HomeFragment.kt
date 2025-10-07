@@ -36,9 +36,7 @@ class HomeFragment : Fragment() {
         binding.vpHomePannel.adapter = pannelAdapter
         binding.vpHomePannel.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        TabLayoutMediator(binding.homePannelIndicatorTl, binding.vpHomePannel) { tab, position ->
-            // 여기는 아무것도 안해도 점(dot)으로 표시됩니다.
-        }.attach()
+        binding.homePannelIndicatorTl.setViewPager2(binding.vpHomePannel)
 
         albumDatas.clear()
         albumDatas.apply {

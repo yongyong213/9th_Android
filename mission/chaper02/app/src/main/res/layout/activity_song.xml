@@ -227,7 +227,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/nugu_btn_random_inactive"/>
+            android:src="@drawable/nugu_btn_random_inactive"
+            app:tint="@color/button_tint_color"/>
 
         <ImageView
             android:id="@+id/song_btn_repeat_inactive_iv"
@@ -237,7 +238,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="20dp"
-            android:src="@drawable/nugu_btn_random_inactive"/>
+            android:src="@drawable/nugu_btn_repeat_inactive"
+            app:tint="@color/button_tint_color"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

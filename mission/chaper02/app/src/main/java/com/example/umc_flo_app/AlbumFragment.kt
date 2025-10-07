@@ -41,7 +41,10 @@ class AlbumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val AlbumAdapter = AlbumSongVPAdapter(this)
+        val title = args.albumTitle
+        val singer = args.albumSinger
+
+        val AlbumAdapter = AlbumSongVPAdapter(this, title, singer)
         binding.vpAlbum.adapter = AlbumAdapter
 
         TabLayoutMediator(binding.tblAlbumFragment, binding.vpAlbum){tab, position -> tab.text=tabTitles[position]}.attach()
