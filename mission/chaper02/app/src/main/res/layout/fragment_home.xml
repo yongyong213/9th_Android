@@ -59,7 +59,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:text="오늘 발매 음악"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginStart="20dp"/>
                 <ImageView
@@ -86,7 +86,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="종합"
-                        android:textSize="18dp"/>
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/home_today_music_domestic_tv"
@@ -96,7 +96,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="국내"
-                        android:textSize="18dp"/>
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:id="@+id/home_today_music_abroad_tv"
@@ -106,7 +106,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="해외"
-                        android:textSize="18dp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

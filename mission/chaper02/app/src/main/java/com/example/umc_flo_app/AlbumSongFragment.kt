@@ -17,7 +17,7 @@ class AlbumSongFragment : Fragment() {
     ): View? {
         binding = FragmentAlbumSongBinding.inflate(inflater, container, false)
 
-        albumSongDatas.apply{
+        albumSongDatas.apply {
             add(AlbumSong("사랑하게 될거야", "한로로"))
             add(AlbumSong("비틀비틀 짝짜꿍", "한로로"))
             add(AlbumSong("입춘", "한로로"))

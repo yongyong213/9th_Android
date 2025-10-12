@@ -63,6 +63,10 @@ class HomeFragment : Fragment() {
                 )
                 findNavController().navigate(action)
             }
+
+            override fun onPlayButtonClick(album: Album) {
+                (activity as MainActivity).updateMiniPlayer(album)
+            }
         })
 
 

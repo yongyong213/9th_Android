@@ -14,15 +14,28 @@
         android:layout_marginTop="10dp"
 
         android:src="@drawable/img_album_exp2"/>
+
+    <ImageView
+        android:id="@+id/iv_btn_play"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/widget_black_play"
+        app:layout_constraintEnd_toEndOf="@id/item_album_img_iv"
+        app:layout_constraintBottom_toBottomOf="@id/item_album_img_iv"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"/>
     <TextView
         android:id="@+id/item_album_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="25dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_album_img_iv"
-        android:text="라일락"
-        android:textSize="18dp"
-        android:paddingEnd="0dp"/>
+        android:text="BBoom BBoom"
+        android:textSize="18sp"
+        android:paddingEnd="0dp"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMaxTextSize="100sp"
+        app:autoSizeStepGranularity="1sp"/>
 
     <TextView
         android:id="@+id/item_album_singer_tv"
@@ -31,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_album_title_tv"
         android:text="IU"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textColor="@color/gray_color"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

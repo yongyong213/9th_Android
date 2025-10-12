@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="20dp"
             android:text="보관함"
-            android:textSize="35dp"
+            android:textSize="35sp"
             android:textStyle="bold"/>
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="로그인"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/blue"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"

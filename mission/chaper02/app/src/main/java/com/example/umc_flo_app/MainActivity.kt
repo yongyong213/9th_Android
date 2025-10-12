@@ -32,4 +32,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    fun updateMiniPlayer(album: Album){
+        binding.mainMiniplayerTitleTv.text = album.title
+        binding.mainMiniplayerSingerTv.text = album.singer
+    }
 }

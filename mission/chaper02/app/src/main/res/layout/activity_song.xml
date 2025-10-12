@@ -71,7 +71,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:text="노래 제목"
-            android:textSize="24dp"
+            android:textSize="24sp"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/song_singer_tv"
@@ -82,7 +82,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="4dp"
             android:text="가수 이름"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     
     <ImageView
@@ -104,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:textColor="@color/gray_color"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:text="내리는 꽃가루에\n눈이 따끔해 아야"/>
     
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -154,7 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0:00"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/blue"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="25dp"
@@ -166,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3:00"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/text_sub"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="25dp"

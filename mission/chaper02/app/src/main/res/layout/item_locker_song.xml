@@ -4,40 +4,43 @@
     android:layout_height="50dp"
     android:layout_marginTop="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/tv_item_album_song_num"
-        android:layout_width="30dp"
-        android:layout_height="25dp"
-        android:text="01"
-        android:textSize="20sp"
+
+    <ImageView
+        android:layout_marginStart="10dp"
+        android:id="@+id/iv_item_locker_song_img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/img_album_exp7"
         android:gravity="bottom|center_horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/tv_item_album_song_title"
+        android:id="@+id/tv_item_locker_song_title"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:text="Be My Love With"
         android:textStyle="bold"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/tv_item_album_song_num"
+        app:layout_constraintStart_toEndOf="@id/iv_item_locker_song_img"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dp"
         android:gravity="bottom"/>
 
     <TextView
-        android:id="@+id/tv_item_album_song_singer"
+        android:id="@+id/tv_item_locker_song_singer"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:text="Owen Ovadoz"
-        app:layout_constraintStart_toEndOf="@id/tv_item_album_song_num"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_album_song_title"
+        app:layout_constraintStart_toEndOf="@id/iv_item_locker_song_img"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_locker_song_title"
+        android:layout_marginStart="10dp"
         android:textColor="@color/gray_color"/>
 
     <ImageView
         android:id="@+id/iv_btn_more"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/btn_player_more"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +49,8 @@
 
     <ImageView
         android:id="@+id/iv_btn_play"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/btn_player_play"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@id/iv_btn_more"
