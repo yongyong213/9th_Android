@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Umc_flo_app">
         <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -21,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SongActivity"
-            android:exported="true">
-        </activity>
+        <activity
+            android:name=".SongActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

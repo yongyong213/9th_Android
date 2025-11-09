@@ -1,19 +1,20 @@
 package com.example.umc_flo_app
 
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.umc_flo_app.databinding.ActivitySongBinding
+import com.google.gson.Gson
 
 class SongActivity : AppCompatActivity(){
     lateinit var binding: ActivitySongBinding
     lateinit var song : Song
     lateinit var timer: Timer
     private var mediaPlayer: MediaPlayer? = null
+    private var gson: Gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +54,28 @@ class SongActivity : AppCompatActivity(){
             restartMusic()
         }
 
+        binding.sbSongProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean){
+                if(fromUser){
+                    timer.mills = progress.toFloat()
+                    timer.second = progress / 1000
+                    binding.songCurrentTimeTv.text = String.format("%02d:%02d", timer.second / 60, timer.second % 60)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?){}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?){
+                seekBar?.let {
+                    mediaPlayer?.seekTo(it.progress)
+                    timer.second = it.progress / 1000
+                    binding.songCurrentTimeTv.text = String.format("%02d:%02d", timer.second / 60, timer.second % 60)
+                }
+            }
+        })
+
     }
 
-    override fun onDestroy(){
-        super.onDestroy()
-        timer.interrupt()
-    }
     private fun initSong(){
         if(intent.hasExtra("title") && intent.hasExtra("singer")){
             song = Song(
@@ -70,7 +87,6 @@ class SongActivity : AppCompatActivity(){
                 intent.getStringExtra("music")!!
             )
         }
-        startTimer()
     }
 
     private fun setPlayer(song: Song){
@@ -83,13 +99,16 @@ class SongActivity : AppCompatActivity(){
         val actualDurationMs = mediaPlayer?.duration ?: 0
         song.playTime = actualDurationMs / 1000
         binding.sbSongProgress.max = actualDurationMs
+
         binding.sbSongProgress.progress = song.second * 1000
+        mediaPlayer?.seekTo(song.second * 1000)
 
         binding.songCurrentTimeTv.text = String.format("%02d:%02d", song.second / 60, song.second % 60)
         binding.songEndTimeTv.text = String.format("%02d:%02d", song.playTime / 60, song.playTime % 60)
 
-        setPlayerStatus(song.isPlaying)
+        startTimer()
 
+        setPlayerStatus(song.isPlaying)
     }
 
     fun setPlayerStatus(isPlaying: Boolean){
@@ -119,7 +138,7 @@ class SongActivity : AppCompatActivity(){
     }
 
     private fun startTimer(){
-        timer = Timer(song.playTime, song.isPlaying)
+        timer = Timer(song.playTime, song.isPlaying, song.second * 1000)
         timer.start()
     }
 
@@ -130,16 +149,19 @@ class SongActivity : AppCompatActivity(){
         binding.sbSongProgress.progress = 0
         binding.songCurrentTimeTv.text = "00:00"
 
+        timer.mills = 0f
+        timer.second = 0
+
         if (song.isPlaying) {
             mediaPlayer?.start()
         }
     }
 
 
-    inner class Timer(private val playTime: Int, var isPlaying: Boolean = true):Thread(){
+    inner class Timer(private val playTime: Int, var isPlaying: Boolean = true, startMS: Int = 0):Thread(){
 
-        private var second : Int = 0
-        private var mills: Float = 0f
+        var second : Int = startMS / 1000
+        var mills: Float = startMS.toFloat()
 
         override fun run(){
             super.run()
@@ -155,7 +177,7 @@ class SongActivity : AppCompatActivity(){
                         mills += 50
 
                         runOnUiThread {
-                            binding.sbSongProgress.progress = ((mills / playTime)*100).toInt()
+                            binding.sbSongProgress.progress = mills.toInt()
                         }
 
                         if(mills % 1000 == 0f){
@@ -171,6 +193,25 @@ class SongActivity : AppCompatActivity(){
             }
 
         }
+    }
+
+    override fun onPause(){
+        super.onPause()
+        setPlayerStatus(false)
+        song.second = (binding.sbSongProgress.progress / 1000)
+        val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val songJson = gson.toJson(song)
+        editor.putString("song", songJson)
+
+        editor.apply()
+    }
+
+    override fun onDestroy(){
+        super.onDestroy()
+        timer.interrupt()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
 }

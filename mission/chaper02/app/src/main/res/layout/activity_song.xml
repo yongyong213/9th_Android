@@ -148,6 +148,7 @@
             android:layout_marginBottom="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:progressTint="@color/blue"
             android:max="100000"
             android:background="@null"/>
 

@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_miniplayer_cl"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
         android:background="@color/white"
         android:clickable="true"
         android:elevation="1dp"
@@ -19,6 +19,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
+
+        <SeekBar
+            android:id="@+id/sb_main_process"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:thumb="@null"
+            android:progressTint="@color/blue"
+            android:max="100000"/>
 
 
         <TextView

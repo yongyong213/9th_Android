@@ -18,7 +18,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-        
+
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/home_pannel_indicator_tl"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vp_home_pannel"
+            app:layout_constraintBottom_toTopOf="@id/home_today_music"
+            android:layout_marginTop="5dp"
+            app:ci_drawable="@color/select_color"
+            app:ci_height="8dp"
+            app:ci_width="8dp"/>
+        <!--
         <com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator
             android:id="@+id/home_pannel_indicator_tl"
             android:layout_width="wrap_content"
@@ -34,6 +47,7 @@
             app:stiffness="300"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"/>
+           -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_today_music"

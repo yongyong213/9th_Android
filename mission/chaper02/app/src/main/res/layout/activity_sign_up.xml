@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity">
+
+    <TextView
+        android:id="@+id/tv_signup_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/et_signup_id"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="아이디(이메일)"
+        android:inputType="textEmailAddress"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_title"/>
+
+    <TextView
+        android:id="@+id/tv_signup_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toEndOf="@id/et_signup_id"
+        app:layout_constraintEnd_toStartOf="@id/et_signup_domain"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_title"/>
+
+    <EditText
+        android:id="@+id/et_signup_domain"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:hint="직접입력"
+        android:inputType="textEmailAddress"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toEndOf="@id/tv_signup_at"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_signup_title"/>
+
+    <EditText
+        android:id="@+id/et_signup_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_signup_id"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="비밀번호"
+        android:inputType="textPassword"/>
+
+    <ImageView
+        android:id="@+id/iv_btn_input_password"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/btn_input_password"
+        app:layout_constraintEnd_toEndOf="@id/et_signup_password"
+        app:layout_constraintTop_toTopOf="@id/et_signup_password"
+        app:layout_constraintBottom_toBottomOf="@id/et_signup_password"
+        android:layout_marginEnd="10dp"/>
+
+    <EditText
+        android:id="@+id/et_signup_check_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_signup_password"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="비밀번호 확인"
+        android:inputType="textPassword"/>
+
+    <ImageView
+        android:id="@+id/iv_btn_input_password2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/btn_input_password"
+        app:layout_constraintEnd_toEndOf="@id/et_signup_check_password"
+        app:layout_constraintTop_toTopOf="@id/et_signup_check_password"
+        app:layout_constraintBottom_toBottomOf="@id/et_signup_check_password"
+        android:layout_marginEnd="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_btn_signup_signup"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="가입완료"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:background="@color/select_color"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

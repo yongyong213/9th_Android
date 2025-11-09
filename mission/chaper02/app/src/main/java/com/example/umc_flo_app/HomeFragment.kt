@@ -1,6 +1,8 @@
 package com.example.umc_flo_app
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.umc_flo_app.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
-
+import me.relex.circleindicator.CircleIndicator3
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
 
     private var albumDatas = ArrayList<Album>()
     private var pannelDatas = ArrayList<Pannel>()
+
+    private val sliderHandler = Handler(Looper.getMainLooper())
+    private val sliderRunnable: Runnable = Runnable{
+        val viewPager = binding.vpHomePannel
+        val nextItem = (viewPager.currentItem + 1) % pannelDatas.size
+
+        viewPager.setCurrentItem(nextItem, true)
+
+        sliderHandler.postDelayed(this.sliderRunnable, 3000)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,11 +44,17 @@ class HomeFragment : Fragment() {
             add(Pannel(R.drawable.img_album_exp4, "드라이브할 때 듣는\n감미로운 재즈 힙합", R.drawable.img_album_exp2, "LILAC", "아이유 (IU)"))
         }
 
+        //val pannelAdapter = PannelVPAdapter(this, pannelDatas)
+        //binding.vpHomePannel.adapter = pannelAdapter
+        //binding.vpHomePannel.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        //binding.homePannelIndicatorTl.setViewPager2(binding.vpHomePannel)
         val pannelAdapter = PannelVPAdapter(this, pannelDatas)
         binding.vpHomePannel.adapter = pannelAdapter
         binding.vpHomePannel.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        binding.homePannelIndicatorTl.setViewPager2(binding.vpHomePannel)
+        val indicator: CircleIndicator3 = binding.homePannelIndicatorTl
+        indicator.setViewPager(binding.vpHomePannel)
 
         albumDatas.clear()
         albumDatas.apply {
@@ -68,9 +86,17 @@ class HomeFragment : Fragment() {
                 (activity as MainActivity).updateMiniPlayer(album)
             }
         })
-
-
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sliderHandler.removeCallbacks(sliderRunnable)
+        sliderHandler.postDelayed(sliderRunnable, 3000)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sliderHandler.removeCallbacks(sliderRunnable)
     }
 }

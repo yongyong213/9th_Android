@@ -39,6 +39,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/lookFragment"
+        android:name="com.example.umc_flo_app.LookFragment"
+        android:label="둘러보기"
+        tools:layout="@layout/fragment_look">
+    </fragment>
+
+    <fragment
         android:id="@+id/SavedSongFragment"
         android:name="com.example.umc_flo_app.SaveSongFragment"
         android:label="저장한곡"

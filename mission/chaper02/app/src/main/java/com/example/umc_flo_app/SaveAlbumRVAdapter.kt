@@ -50,17 +50,13 @@ class SaveAlbumRVAdapter(private val albumList: ArrayList<SaveAlbumData>): Recyc
             binding.ivItemAlbumLockerCover.setImageResource(album.coverImgRes)
 
             if (album.isPlaying) {
-                binding.ivBtnPlay.setImageResource(R.drawable.btn_miniplay_pause) // 멈춤 아이콘
+                binding.ivBtnPlay.setImageResource(R.drawable.btn_miniplay_pause)
             } else {
-                binding.ivBtnPlay.setImageResource(R.drawable.btn_player_play)  // 재생 아이콘
+                binding.ivBtnPlay.setImageResource(R.drawable.btn_player_play)
             }
 
 
             binding.ivBtnAlbumLockerMore.setOnClickListener {
-                mItemClickListener.onMoreButtonClick(bindingAdapterPosition)
-            }
-
-            binding.ivBtnPlay.setOnClickListener {
                 mItemClickListener.onMoreButtonClick(bindingAdapterPosition)
             }
 
