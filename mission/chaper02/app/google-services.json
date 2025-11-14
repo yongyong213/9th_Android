@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "446559229289",
+    "project_id": "floumc-360cd",
+    "storage_bucket": "floumc-360cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446559229289:android:2fd8e124e6e569da7419f8",
+        "android_client_info": {
+          "package_name": "com.example.umc_flo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6a1G60Q39IpmnJtFuh5PL6a_y0YCH10w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

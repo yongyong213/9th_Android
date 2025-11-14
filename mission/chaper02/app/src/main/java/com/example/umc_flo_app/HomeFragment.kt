@@ -58,12 +58,12 @@ class HomeFragment : Fragment() {
 
         albumDatas.clear()
         albumDatas.apply {
-            add(Album("Butter", "방탄소년단", R.drawable.img_album_exp))
-            add(Album("LILAC", "아이유 (IU)", R.drawable.img_album_exp2))
-            add(Album("Next Level", "aespa", R.drawable.img_album_exp3))
-            add(Album("Boy with Luv", "방탄소년단", R.drawable.img_album_exp4))
-            add(Album("BBoom BBoom", "모모랜드", R.drawable.img_album_exp5))
-            add(Album("Weekend", "태연", R.drawable.img_album_exp6))
+            add(Album(0, "Butter", "방탄소년단", R.drawable.img_album_exp, false))
+            add(Album(0, "LILAC", "아이유 (IU)", R.drawable.img_album_exp2, false))
+            add(Album(0, "Next Level", "aespa", R.drawable.img_album_exp3, false))
+            add(Album(0, "Boy with Luv", "방탄소년단", R.drawable.img_album_exp4, false))
+            add(Album(0, "BBoom BBoom", "모모랜드", R.drawable.img_album_exp5, false))
+            add(Album(0, "Weekend", "태연", R.drawable.img_album_exp6, false))
         }
 
         val albumRVAdapter = AlbumRVAdapter(albumDatas)

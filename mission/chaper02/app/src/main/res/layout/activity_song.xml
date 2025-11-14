@@ -123,6 +123,14 @@
             app:layout_constraintTop_toTopOf="parent"
             android:src="@drawable/ic_my_like_off"/>
         <ImageView
+            android:id="@+id/iv_song_btn_like_on"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_my_like_on"
+            android:visibility="gone"/>
+        <ImageView
             android:id="@+id/song_btn_unlike_iv"
             android:layout_width="30dp"
             android:layout_height="30dp"

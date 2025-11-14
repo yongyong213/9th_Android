@@ -6,24 +6,55 @@ import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.umc_flo_app.databinding.ActivitySongBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SongActivity : AppCompatActivity(){
     lateinit var binding: ActivitySongBinding
     lateinit var song : Song
     lateinit var timer: Timer
     private var mediaPlayer: MediaPlayer? = null
-    private var gson: Gson = Gson()
+    lateinit var db: AppDatabase
+    private var songs: List<Song> = arrayListOf()
+    private var nowPos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySongBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
+        db = AppDatabase.getInstance(this)!!
+
         initSong()
-        setPlayer(song)
+
+        lifecycleScope.launch(Dispatchers.IO){
+            songs = db.songDao().getSongs()
+            findNowPos()
+        }
+
+        val uid = "asdfqwer1234"
+        val userSongsRef = FirebaseDatabase.getInstance().getReference("songs").child(uid)
+
+        userSongsRef.get().addOnSuccessListener { dataSnapshot ->
+            val songList = arrayListOf<Song>()
+
+            for(childSnapshot in dataSnapshot.children){
+                val song = childSnapshot.getValue(Song::class.java)
+                if(song != null){
+                    songList.add(song)
+                }
+            }
+
+            runOnUiThread {
+                setPlayer(song)
+            }
+        }
 
         binding.songBtnDownIv.setOnClickListener {
             finish()
@@ -47,11 +78,19 @@ class SongActivity : AppCompatActivity(){
         }
 
         binding.songBtnPreviousIv.setOnClickListener {
-            restartMusic()
+            moveSong(-1)
         }
 
         binding.songBtnNextIv.setOnClickListener {
-            restartMusic()
+            moveSong(1)
+        }
+
+        binding.songBtnLikeIv.setOnClickListener {
+            setLikeStatus()
+        }
+
+        binding.ivSongBtnLikeOn.setOnClickListener {
+            setLikeStatus()
         }
 
         binding.sbSongProgress.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
@@ -79,22 +118,44 @@ class SongActivity : AppCompatActivity(){
     private fun initSong(){
         if(intent.hasExtra("title") && intent.hasExtra("singer")){
             song = Song(
-                intent.getStringExtra("title")!!,
-                intent.getStringExtra("singer")!!,
-                intent.getIntExtra("second", 0),
-                intent.getIntExtra("playTime", 60),
-                intent.getBooleanExtra("isPlaying", false),
-                intent.getStringExtra("music")!!
+                songId = intent.getIntExtra("songId", 0),
+                title = intent.getStringExtra("title")!!,
+                singer = intent.getStringExtra("singer")!!,
+                second = intent.getIntExtra("second", 0),
+                playTime = intent.getIntExtra("playTime", 60),
+                isPlaying = intent.getBooleanExtra("isPlaying", false),
+                music = intent.getIntExtra("music", R.raw.music_lilac),
+                coverImg = intent.getIntExtra("coverImg", R.drawable.img_album_exp2),
+                isLike = intent.getBooleanExtra("isLike", false),
+                albumIdx = intent.getIntExtra("albumIdx", 0)
             )
         }
+    }
+
+    private fun findNowPos(){
+        nowPos = songs.indexOfFirst{ it.songId == song.songId}
     }
 
     private fun setPlayer(song: Song){
         binding.songTitleTv.text = song.title
         binding.songSingerTv.text = song.singer
+        binding.songAlbumImgIv.setImageResource(song.coverImg)
 
-        val music = resources.getIdentifier(song.music, "raw", this.packageName)
-        mediaPlayer = MediaPlayer.create(this, music)
+        if(song.isLike == false){
+            binding.ivSongBtnLikeOn.visibility = View.GONE
+            binding.songBtnLikeIv.visibility = View.VISIBLE
+        }
+        else{
+            binding.ivSongBtnLikeOn.visibility = View.VISIBLE
+            binding.songBtnLikeIv.visibility = View.GONE
+        }
+
+        if(mediaPlayer != null){
+            mediaPlayer?.release()
+            mediaPlayer = null
+        }
+
+        mediaPlayer = MediaPlayer.create(this, song.music)
 
         val actualDurationMs = mediaPlayer?.duration ?: 0
         song.playTime = actualDurationMs / 1000
@@ -137,24 +198,53 @@ class SongActivity : AppCompatActivity(){
         binding.songBtnRepeatInactiveIv.isSelected = !binding.songBtnRepeatInactiveIv.isSelected
     }
 
+    fun setLikeStatus(){
+        song.isLike = !song.isLike
+
+        if(song.isLike == false){
+            binding.ivSongBtnLikeOn.visibility = View.GONE
+            binding.songBtnLikeIv.visibility = View.VISIBLE
+        }
+        else{
+            binding.ivSongBtnLikeOn.visibility = View.VISIBLE
+            binding.songBtnLikeIv.visibility = View.GONE
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            db.songDao().update(song)
+
+            val uid = "asdfqwer1234"
+            val songRef = FirebaseDatabase.getInstance().getReference("songs")
+
+            songRef.child(uid).child(song.songId.toString()).child("like").setValue(song.isLike)
+        }
+    }
+
     private fun startTimer(){
+        if(::timer.isInitialized && timer.isAlive){
+            timer.interrupt()
+        }
         timer = Timer(song.playTime, song.isPlaying, song.second * 1000)
         timer.start()
     }
 
-    private fun restartMusic() {
-
-        mediaPlayer?.seekTo(0)
-
-        binding.sbSongProgress.progress = 0
-        binding.songCurrentTimeTv.text = "00:00"
-
-        timer.mills = 0f
-        timer.second = 0
-
-        if (song.isPlaying) {
-            mediaPlayer?.start()
+    private fun moveSong(direction: Int) {
+        if(songs.isEmpty()){
+            return
         }
+
+        nowPos += direction
+        if(nowPos < 0){
+            nowPos = songs.size - 1
+        }
+        else if(nowPos >= songs.size){
+            nowPos = 0
+        }
+
+        song = songs[nowPos]
+
+        setPlayer(song)
+        setPlayerStatus(true)
     }
 
 
@@ -201,8 +291,10 @@ class SongActivity : AppCompatActivity(){
         song.second = (binding.sbSongProgress.progress / 1000)
         val sharedPreferences = getSharedPreferences("song", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
-        val songJson = gson.toJson(song)
-        editor.putString("song", songJson)
+
+        editor.putInt("songId", song.songId)
+        editor.putInt("songSecond", song.second)
+
 
         editor.apply()
     }
