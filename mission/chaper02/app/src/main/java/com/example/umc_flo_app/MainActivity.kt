@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainMiniplayerCl.setOnClickListener{
             val intent =Intent(this, SongActivity::class.java)
 
+            intent.putExtra("songId", song.songId)
             intent.putExtra("title", song.title)
             intent.putExtra("singer", song.singer)
             intent.putExtra("second", song.second)

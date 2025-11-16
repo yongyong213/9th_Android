@@ -4,6 +4,8 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -190,6 +192,26 @@ class SongActivity : AppCompatActivity(){
         }
     }
 
+    private fun playLikeAnimation(){
+        val anim = AnimationUtils.loadAnimation(this, R.anim.like_animation)
+
+        anim.setAnimationListener(object : Animation.AnimationListener{
+            override fun onAnimationStart(animation: Animation?) {
+                binding.ivLikeAnimation.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.ivLikeAnimation.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+
+            }
+        })
+
+        binding.ivLikeAnimation.startAnimation(anim)
+    }
+
     fun setRandomStatus(){
         binding.songBtnRandomInactiveIv.isSelected = !binding.songBtnRandomInactiveIv.isSelected
     }
@@ -208,6 +230,8 @@ class SongActivity : AppCompatActivity(){
         else{
             binding.ivSongBtnLikeOn.visibility = View.VISIBLE
             binding.songBtnLikeIv.visibility = View.GONE
+
+            playLikeAnimation()
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
