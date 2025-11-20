@@ -54,4 +54,4 @@
         3. Signature:
             - 이 토큰이 변조되지 않았음을 보증하는 도장역할으로
             - 토큰의 무결성을 검증한다.
-            - 인코딩된 Header + 인코딩된 Payload + 서버만 아는 비밀 키(Secret Key)를 합친 뒤, Header에 선언됐던 알고리즘(alg)로 암호화하여 생성한다.
+            - 인코딩된 Header + 인코딩된 Payload + 서버만 아는 비밀 키(Secret Key)를 합친 뒤, Header에 선언됐던 알고리즘(alg)로 암호화하여 생성한다. 
