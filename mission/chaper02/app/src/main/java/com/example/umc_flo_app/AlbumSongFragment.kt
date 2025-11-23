@@ -5,11 +5,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.umc_flo_app.databinding.FragmentAlbumSongBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AlbumSongFragment : Fragment() {
     lateinit var binding: FragmentAlbumSongBinding
-    private val albumSongDatas = ArrayList<AlbumSong>()
+    private var albumId: Int = 1
+
+    companion object {
+        fun newInstance(albumId: Int): AlbumSongFragment {
+            val fragment = AlbumSongFragment()
+            val args = Bundle()
+            args.putInt("albumId", albumId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            albumId = it.getInt("albumId", 1)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -17,19 +39,18 @@ class AlbumSongFragment : Fragment() {
     ): View? {
         binding = FragmentAlbumSongBinding.inflate(inflater, container, false)
 
-        albumSongDatas.apply {
-            add(AlbumSong("사랑하게 될거야", "한로로"))
-            add(AlbumSong("비틀비틀 짝짜꿍", "한로로"))
-            add(AlbumSong("입춘", "한로로"))
-            add(AlbumSong("자처", "한로로"))
-            add(AlbumSong("금붕어", "한로로"))
-            add(AlbumSong("ㅈㅣㅂ", "한로로"))
-            add(AlbumSong("생존법", "한로로"))
-        }
+        val db = AppDatabase.getInstance(requireContext())!!
 
-        val albumSongRVAdapter = AlbumSongRVAdapter(albumSongDatas)
-        binding.rvAlbumSong.adapter = albumSongRVAdapter
-        // Inflate the layout for this fragment
+        lifecycleScope.launch(Dispatchers.IO){
+            val songs = db.songDao().getSongsInAlbum(albumId)
+
+            withContext(Dispatchers.Main){
+                val albumSongRVAdapter = AlbumSongRVAdapter(songs)
+                binding.rvAlbumSong.adapter = albumSongRVAdapter
+                binding.rvAlbumSong.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+        }
         return binding.root
     }
 

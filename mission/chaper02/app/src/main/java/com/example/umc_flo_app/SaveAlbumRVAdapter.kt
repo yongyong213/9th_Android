@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_flo_app.databinding.ItemLockerAlbumBinding
 
-class SaveAlbumRVAdapter(private val albumList: ArrayList<SaveAlbumData>): RecyclerView.Adapter<SaveAlbumRVAdapter.ViewHolder>(){
+class SaveAlbumRVAdapter(private val albums: ArrayList<Album>): RecyclerView.Adapter<SaveAlbumRVAdapter.ViewHolder>(){
 
     interface OnItemClickListener{
         fun onMoreButtonClick(position: Int)
@@ -18,9 +18,16 @@ class SaveAlbumRVAdapter(private val albumList: ArrayList<SaveAlbumData>): Recyc
         mItemClickListener = itemClickListener
     }
 
+    fun setData(newAlbums: List<Album>) {
+        albums.clear()
+        albums.addAll(newAlbums)
+        notifyDataSetChanged()
+    }
+
     fun removeItem(position: Int){
-        albumList.removeAt(position)
+        albums.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, albums.size)
     }
 
     override fun onCreateViewHolder(
@@ -35,26 +42,21 @@ class SaveAlbumRVAdapter(private val albumList: ArrayList<SaveAlbumData>): Recyc
         holder: ViewHolder,
         position: Int
     ) {
-        holder.bind(albumList[position])
+        holder.bind(albums[position])
     }
 
 
-    override fun getItemCount(): Int = albumList.size
+    override fun getItemCount(): Int = albums.size
 
     inner class ViewHolder(val binding: ItemLockerAlbumBinding): RecyclerView.ViewHolder(binding.root){
 
-        fun bind(album: SaveAlbumData){
+        fun bind(album: Album){
             binding.tvItemAlbumLockerTitle.text = album.title
             binding.tvItemAlbumLockerSinger.text = album.singer
-            binding.tvItemAlbumLockerInfo.text = album.info
-            binding.ivItemAlbumLockerCover.setImageResource(album.coverImgRes)
+//            binding.tvItemAlbumLockerInfo.text = album.info
+            binding.ivItemAlbumLockerCover.setImageResource(album.coverImg)
 
-            if (album.isPlaying) {
-                binding.ivBtnPlay.setImageResource(R.drawable.btn_miniplay_pause)
-            } else {
-                binding.ivBtnPlay.setImageResource(R.drawable.btn_player_play)
-            }
-
+            binding.ivBtnPlay.setImageResource(R.drawable.btn_player_play)
 
             binding.ivBtnAlbumLockerMore.setOnClickListener {
                 mItemClickListener.onMoreButtonClick(bindingAdapterPosition)

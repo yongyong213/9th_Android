@@ -7,12 +7,16 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.umc_flo_app.databinding.ActivitySongBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -221,15 +225,29 @@ class SongActivity : AppCompatActivity(){
     }
 
     fun setLikeStatus(){
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+
+        if (currentUser == null) {
+            Toast.makeText(this, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val userId = currentUser.uid
+
         song.isLike = !song.isLike
 
         if(song.isLike == false){
             binding.ivSongBtnLikeOn.visibility = View.GONE
             binding.songBtnLikeIv.visibility = View.VISIBLE
+
+            removeSongFromFirebase(userId, song)
         }
         else{
             binding.ivSongBtnLikeOn.visibility = View.VISIBLE
             binding.songBtnLikeIv.visibility = View.GONE
+
+            addSongToFirebase(userId, song)
 
             playLikeAnimation()
         }
@@ -242,6 +260,21 @@ class SongActivity : AppCompatActivity(){
 
             songRef.child(uid).child(song.songId.toString()).child("like").setValue(song.isLike)
         }
+    }
+
+    private fun addSongToFirebase(userId: String, song: Song) {
+        val database = Firebase.database
+        // 경로: users / {userId} / likedSongs / {songId}
+        val myRef = database.getReference("users").child(userId).child("likedSongs").child(song.songId.toString())
+
+        myRef.setValue(song)
+    }
+
+    private fun removeSongFromFirebase(userId: String, song: Song) {
+        val database = Firebase.database
+        val myRef = database.getReference("users").child(userId).child("likedSongs").child(song.songId.toString())
+
+        myRef.removeValue()
     }
 
     private fun startTimer(){

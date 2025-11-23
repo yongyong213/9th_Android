@@ -8,15 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.umc_flo_app.databinding.FragmentHomeBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.relex.circleindicator.CircleIndicator3
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
+    lateinit var db: AppDatabase
 
     private var albumDatas = ArrayList<Album>()
     private var pannelDatas = ArrayList<Pannel>()
@@ -37,6 +43,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        db = AppDatabase.getInstance(requireContext())!!
 
         pannelDatas.clear()
         pannelDatas.apply {
@@ -44,11 +51,6 @@ class HomeFragment : Fragment() {
             add(Pannel(R.drawable.img_album_exp4, "드라이브할 때 듣는\n감미로운 재즈 힙합", R.drawable.img_album_exp2, "LILAC", "아이유 (IU)"))
         }
 
-        //val pannelAdapter = PannelVPAdapter(this, pannelDatas)
-        //binding.vpHomePannel.adapter = pannelAdapter
-        //binding.vpHomePannel.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-        //binding.homePannelIndicatorTl.setViewPager2(binding.vpHomePannel)
         val pannelAdapter = PannelVPAdapter(this, pannelDatas)
         binding.vpHomePannel.adapter = pannelAdapter
         binding.vpHomePannel.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -56,29 +58,34 @@ class HomeFragment : Fragment() {
         val indicator: CircleIndicator3 = binding.homePannelIndicatorTl
         indicator.setViewPager(binding.vpHomePannel)
 
-        albumDatas.clear()
-        albumDatas.apply {
-            add(Album(0, "Butter", "방탄소년단", R.drawable.img_album_exp, false))
-            add(Album(0, "LILAC", "아이유 (IU)", R.drawable.img_album_exp2, false))
-            add(Album(0, "Next Level", "aespa", R.drawable.img_album_exp3, false))
-            add(Album(0, "Boy with Luv", "방탄소년단", R.drawable.img_album_exp4, false))
-            add(Album(0, "BBoom BBoom", "모모랜드", R.drawable.img_album_exp5, false))
-            add(Album(0, "Weekend", "태연", R.drawable.img_album_exp6, false))
-        }
-
+//        albumDatas.clear()
+//        albumDatas.apply {
+//            add(Album(0, "Butter", "방탄소년단", R.drawable.img_album_exp, false))
+//            add(Album(0, "LILAC", "아이유 (IU)", R.drawable.img_album_exp2, false))
+//            add(Album(0, "Next Level", "aespa", R.drawable.img_album_exp3, false))
+//            add(Album(0, "Boy with Luv", "방탄소년단", R.drawable.img_album_exp4, false))
+//            add(Album(0, "BBoom BBoom", "모모랜드", R.drawable.img_album_exp5, false))
+//            add(Album(0, "Weekend", "태연", R.drawable.img_album_exp6, false))
+//        }
         val albumRVAdapter = AlbumRVAdapter(albumDatas)
         binding.homeTodayMusicAlbumRv.adapter = albumRVAdapter
-
-        // 레이아웃 매니저 설정
         binding.homeTodayMusicAlbumRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
+        lifecycleScope.launch(Dispatchers.IO){
+            val albumFromDb = db.albumDao().getAlbums()
+
+            albumDatas.clear()
+            albumDatas.addAll(albumFromDb)
+
+            withContext(Dispatchers.Main) {
+                albumRVAdapter.notifyDataSetChanged()
+            }
+        }
         albumRVAdapter.setMyItemClickListener(object: AlbumRVAdapter.MyItemClickListener{
             override fun onItemClick(album: Album){
-                val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(
-                    album.title,
-                    album.singer,
-                    album.coverImg
-                )
+                val gson = Gson()
+                val albumJson = gson.toJson(album)
+                val action = HomeFragmentDirections.actionHomeFragmentToAlbumFragment(albumJson)
                 findNavController().navigate(action)
             }
 

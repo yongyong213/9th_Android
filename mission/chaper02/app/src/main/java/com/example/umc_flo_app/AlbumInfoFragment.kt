@@ -5,23 +5,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.example.umc_flo_app.databinding.FragmentAlbumInfoBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AlbumInfoFragment : Fragment() {
 
     lateinit var  binding: FragmentAlbumInfoBinding
-
+    lateinit var db: AppDatabase
+    private var albumId: Int = 1
     companion object{
-        private const val ARG_TITLE = "title"
-        private const val ARG_SINGER = "singer"
+        private const val ARG_ALBUM_ID = "albumId"
 
-        fun newInstance(title: String, singer: String): AlbumInfoFragment{
+        fun newInstance(albumId: Int): AlbumInfoFragment{
             val fragment = AlbumInfoFragment()
             val args = Bundle()
-            args.putString(ARG_TITLE, title)
-            args.putString(ARG_SINGER, singer)
+            args.putInt(ARG_ALBUM_ID, albumId)
             fragment.arguments = args
             return fragment
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            albumId = it.getInt(ARG_ALBUM_ID, 1)
         }
     }
 
@@ -31,10 +41,17 @@ class AlbumInfoFragment : Fragment() {
     ): View? {
         binding = FragmentAlbumInfoBinding.inflate(inflater, container, false)
 
-        val title = arguments?.getString(ARG_TITLE)
-        val singer = arguments?.getString(ARG_SINGER)
+        db = AppDatabase.getInstance(requireContext())!!
 
-        binding.tvAlbumInfoDescription.text = getString(R.string.album_info_description, title, singer)
+        lifecycleScope.launch(Dispatchers.IO){
+            val album = db.albumDao().getAlbum(albumId)
+
+            withContext(Dispatchers.Main){
+                album?.let{
+                    binding.tvAlbumInfoDescription.text = getString(R.string.album_info_description, it.title, it.singer)
+                }
+            }
+        }
 
         return binding.root
     }

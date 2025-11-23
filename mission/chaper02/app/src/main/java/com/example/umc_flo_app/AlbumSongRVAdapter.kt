@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.umc_flo_app.databinding.ItemAlbumSongBinding
 
-class AlbumSongRVAdapter(private val albumSongList: ArrayList<AlbumSong>): RecyclerView.Adapter<AlbumSongRVAdapter.ViewHolder>() {
+class AlbumSongRVAdapter(private val songs: List<Song>): RecyclerView.Adapter<AlbumSongRVAdapter.ViewHolder>() {
     inner class ViewHolder(val binding: ItemAlbumSongBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int){
-            val albumSong = albumSongList[position]
+            val song = songs[position]
 
-            binding.tvItemAlbumSongTitle.text = albumSong.title
-            binding.tvItemAlbumSongSinger.text = albumSong.singer
+            binding.tvItemAlbumSongTitle.text = song.title
+            binding.tvItemAlbumSongSinger.text = song.singer
             binding.tvItemAlbumSongNum.text = (position+1).toString()
         }
     }
@@ -28,5 +28,5 @@ class AlbumSongRVAdapter(private val albumSongList: ArrayList<AlbumSong>): Recyc
         holder.bind(position)
     }
 
-    override fun getItemCount(): Int = albumSongList.size
+    override fun getItemCount(): Int = songs.size
 }

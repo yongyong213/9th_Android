@@ -21,14 +21,9 @@
         android:label="앨범"
         tools:layout="@layout/fragment_album">
         <argument
-            android:name="album_title"
-            app:argType="string"/>
-        <argument
-            android:name="album_singer"
-            app:argType="string"/>
-        <argument
-            android:name="album_img"
-            app:argType="integer"/>
+            android:name="album"
+            app:argType="string"
+            android:defaultValue="" />
     </fragment>
 
     <fragment
