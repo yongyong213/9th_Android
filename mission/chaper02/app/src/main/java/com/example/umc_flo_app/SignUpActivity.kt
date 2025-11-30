@@ -1,6 +1,7 @@
 package com.example.umc_flo_app
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.umc_flo_app.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignUpActivity : AppCompatActivity() {
     lateinit var binding: ActivitySignUpBinding
@@ -28,8 +32,11 @@ class SignUpActivity : AppCompatActivity() {
         val email = binding.etSignupId.text.toString() + "@" + binding.etSignupDomain.text.toString()
         val password = binding.etSignupPassword.text.toString()
         val passwordCheck = binding.etSignupCheckPassword.text.toString()
+        val nickname = binding.etSignupNickname.text.toString()
 
-        if(email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty()){
+        val user = User(email, password, nickname)
+
+        if(email.isEmpty() || password.isEmpty() || passwordCheck.isEmpty() || nickname.isEmpty()){
             Toast.makeText(this, "입력하지 않은 정보가 있습니다", Toast.LENGTH_SHORT).show()
             return
         }
@@ -47,5 +54,23 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "회원가입 실패: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
             }
         }
+
+        val authService = getRetrofit().create(AuthRetrofitInterface::class.java)
+        authService.signUp(user).enqueue(object: Callback<AuthResponse>{
+            override fun onResponse(
+                call: Call<AuthResponse?>,
+                response: Response<AuthResponse?>
+            ) {
+                Log.d("SIGNUP/SUCCESS", response.toString())
+            }
+
+            override fun onFailure(
+                call: Call<AuthResponse?>,
+                t: Throwable
+            ) {
+                Log.d("SIGNUP/FAILURE", t.message.toString())
+            }
+        })
+        Log.d("SIGNUP", "HELLO")
     }
 }
